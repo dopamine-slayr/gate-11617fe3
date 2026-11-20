@@ -406,7 +406,6 @@ body.pinok #pinwall{display:none}
         <span class="sep"></span>
         <button id="ctEdit" type="button">Edit text</button>
         <button id="codeSet" type="button">Vault</button>
-        <button id="codeImport" type="button">Import code</button>
         <span class="lbl">phone</span>
         <input type="file" id="bgFile" accept="image/*" hidden>
         <input type="file" id="auFile" accept="audio/mpeg,audio/mp3,.mp3,audio/*" hidden>
@@ -442,7 +441,6 @@ body.pinok #pinwall{display:none}
   var waitTick = null;
   var SEALED = '';
   var CIPHER = 'forge';
-  var XFER = {"s": "CxI8VHv5JI+OUMj0GjqH9w==", "i": "7saBLmaKJ8rT1+jf", "c": "9kz/Qywpnne8itvAQI3sn01LtzlRSLOxwccUQ+5uPa6ZSvvd"};
   var DEFAULT_MILES = [3, 7, 14, 30, 60];
 
   var QUESTIONS = [
@@ -1229,31 +1227,6 @@ body.pinok #pinwall{display:none}
     };
     Array.prototype.forEach.call(document.querySelectorAll('.v-del'), function (b) { b.onclick = function () { var l = vaultRead(); l.splice(parseInt(b.getAttribute('data-v'), 10), 1); vaultWrite(l); openVault('Removed'); }; });
   }
-  $('codeImport').onclick = function () {
-    showOverlay('editor',
-      '<div class="ov-eyebrow">Import code</div>' +
-      '<p class="fine">Type the 16-character transfer key from the file on your Mac. The override code is unlocked and stored on this phone only; it is never shown.</p>' +
-      '<div class="field"><label class="ov-label" for="xfer-in">Transfer key</label><input id="xfer-in" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" style="font-family:var(--display);max-width:100%;font-size:22px;letter-spacing:.12em"></div>' +
-      '<p class="err" id="xfer-err"></p>' +
-      '<div class="ov-actions"><button class="btn primary" type="button" id="xfer-go">Import</button><button class="btn" type="button" data-close="1">Cancel</button></div>',
-      '#xfer-in');
-    $('xfer-go').onclick = function () {
-      var k = $('xfer-in').value.replace(/[^A-Za-z0-9]/g, '').toUpperCase(), err = $('xfer-err');
-      if (k.length !== 16) { err.textContent = 'Key is 16 characters'; return; }
-      err.textContent = 'Unlocking…';
-      var b64 = function (t) { var r = atob(t), a = new Uint8Array(r.length); for (var i = 0; i < r.length; i++) a[i] = r.charCodeAt(i); return a; };
-      crypto.subtle.importKey('raw', new TextEncoder().encode(k), 'PBKDF2', false, ['deriveKey'])
-        .then(function (km) { return crypto.subtle.deriveKey({ name: 'PBKDF2', salt: b64(XFER.s), iterations: 300000, hash: 'SHA-256' }, km, { name: 'AES-GCM', length: 256 }, false, ['decrypt']); })
-        .then(function (key) { return crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(XFER.i) }, key, b64(XFER.c)); })
-        .then(function (buf) {
-          var plain = new TextDecoder().decode(buf);
-          var vl = vaultRead().filter(function (e) { return e.label !== 'Override code (Cold Turkey / BlockSite)'; }); vl.unshift({ label: 'Override code (Cold Turkey / BlockSite)', value: plain }); if (!vaultWrite(vl)) { err.textContent = 'Could not save'; return; }
-          $('xfer-in').value = ''; err.textContent = 'Code stored on this phone';
-          setTimeout(closeOverlay, 1200);
-        })
-        .catch(function () { err.textContent = 'Wrong key'; });
-    };
-  };
   $('codeSet').onclick = function () { openVault(''); };
 
   /* ---------- boot ---------- */
