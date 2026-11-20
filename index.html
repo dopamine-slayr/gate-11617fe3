@@ -305,6 +305,15 @@ body.gating #stage>.card{flex:1 1 auto;min-height:0;padding:10px 12px;gap:8px;ov
 .field input{font-size:24px;max-width:100%}.field textarea{font-size:14px;min-height:70px}
 .ce-ta{font-size:13px!important}
 .ov-x{top:8px;right:8px}
+.vault{display:flex;flex-direction:column;gap:10px;flex:1 1 auto;min-height:0;overflow:auto}
+.v-row{display:flex;flex-direction:column;gap:5px}
+.v-label{font-weight:900;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.v-val{font-size:18px;padding:10px;letter-spacing:.06em}
+.v-copy{align-self:flex-start;padding:7px 10px;font-size:10px}
+.v-list{flex-direction:row;align-items:center;gap:8px;border:2px solid var(--line);border-radius:5px;padding:8px}
+.v-list .v-label{flex:1 1 auto;color:var(--ink)}
+.v-mask{letter-spacing:.1em;color:var(--muted)}
+.v-del{padding:6px 8px;font-size:10px}
 #pinwall{position:fixed;inset:0;z-index:1000;background:#0A0A0A;display:flex;align-items:center;justify-content:center;padding:24px}
 body.pinok #pinwall{display:none}
 #pinform{display:flex;flex-direction:column;gap:14px;width:min(320px,100%);align-items:stretch}
@@ -396,7 +405,7 @@ body.pinok #pinwall{display:none}
         <span class="err" id="auErr"></span>
         <span class="sep"></span>
         <button id="ctEdit" type="button">Edit text</button>
-        <button id="codeSet" type="button">Set code</button>
+        <button id="codeSet" type="button">Vault</button>
         <button id="codeImport" type="button">Import code</button>
         <span class="lbl">phone</span>
         <input type="file" id="bgFile" accept="image/*" hidden>
@@ -433,7 +442,7 @@ body.pinok #pinwall{display:none}
   var waitTick = null;
   var SEALED = '';
   var CIPHER = 'forge';
-  var XFER = {"s": "ffzMJXEKVXGI1OGaprL42A==", "i": "wCe+f/iV24Y3MZXz", "c": "ryB7Y5cLrazG7Zn1w0h6mBS7biHFu5wWh4iSh2eHC7+snyAG"};
+  var XFER = {"s": "CxI8VHv5JI+OUMj0GjqH9w==", "i": "7saBLmaKJ8rT1+jf", "c": "9kz/Qywpnne8itvAQI3sn01LtzlRSLOxwccUQ+5uPa6ZSvvd"};
   var DEFAULT_MILES = [3, 7, 14, 30, 60];
 
   var QUESTIONS = [
@@ -498,12 +507,13 @@ body.pinok #pinwall{display:none}
     var j = ORDER[i], base = LABELS_BASE[j], bn = base.no.split('||'), by = base.yes.split('||');
     return { no: (ovText('noWill', j) || bn[0]) + '||' + (ovText('noCloser', j) || bn[1]), yes: (ovText('yesWill', j) || by[0]) + '||' + (ovText('yesCloser', j) || by[1]) };
   }
-  function warningsAll() { var c = state.content || {}; var w = WARNINGS.slice(); if (Array.isArray(c.warnings)) c.warnings.forEach(function (t, k) { if (typeof t === 'string' && t.trim() && k < 5) w[k] = t; }); return w; }
+  function warningsAll() { var c = state.content || {}; var w = WARNINGS.slice(); if (Array.isArray(c.warnings)) c.warnings.forEach(function (t, k) { if (typeof t === 'string' && t.trim() && k < 8) w[k] = t; }); return w; }
 
 
 
   /* one shown under the code, picked at random each time it is pulled */
   var WARNINGS = [
+    "YOU WROTE THIS ON NOVEMBER 19. READ IT. I feel absolutely disgusted with myself. After 22 days of pure development, really growing and maintaining my energy, no lust in my heart, I sacrificed it all. I made a poor decision to sleep with her, even though I knew she is someone I should not be sleeping with. That poor experience and my inability to hold on to my seed led me to later watch pornography, because I felt so disgusted with myself. It was almost like a chaser effect. That led to me watching it again later in the day, and again the next day. And I woke up. I had gone from feeling the best I have ever felt in my life, the most clear-headed, the most on purpose, in tune and confident with myself, to feeling the most depleted I have ever felt in my life. My actions are going to determine everything. This feeling. How do I always forget this feeling? Filthy. Dirty. Low energy. Nauseous. There is physically a nausea I feel in my stomach. Unsettling. You are one tap away from writing this entry again.",
     'The code is in front of you. Nothing is decided yet. Stop for one full minute before you type it anywhere. Feel the pull in your body and name it for what it is: a craving that will pass in twenty minutes whether you feed it or not. If you feed it, you know the exact sequence. The screen, the hand, the cum, then the silence, and tomorrow you walk through a world of women with your current switched off. Not one of them will look up. You will not have gained one thing. You will have traded a real woman, wet and wanting you, for ninety seconds alone. Think slowly. Think like the magnetic man you are building, not the drained one begging right now. Put the code down and go outside.',
     'Read this before you use it. You did not get here because you are weak. You got here because the urge is loud and the future is quiet. So turn the volume up on the future. Picture yourself thirty days from now, charge fully built, walking into a bar and watching heads turn, a girl locking eyes with you and holding them, soft and warm when you get close. That man is real and he is built out of nights exactly like this one. Type this code and you reset him to zero and pay in a currency you already know: fog, dead eyes, women who look straight through you. Nobody will stop you. That is why it has to be you. Close this window and be him.',
     'Here is the honest math. The relief you are chasing lasts seconds. The cost lasts days. With full balls women are warm, they lean in, they let you bend them over. With drained balls they make a weird face and walk away. You have tested this on yourself more times than you can count and the result never changes. You are not about to discover a new outcome. You are about to repeat the oldest one you have. The only thing that changes the outcome is the man who closes this window with the code still unused. He keeps his charge, his hunger, his edge, and he takes them out into a world full of women who can feel it on him. Be deliberate. Breathe. Choose on purpose, not on impulse.',
@@ -549,7 +559,7 @@ body.pinok #pinwall{display:none}
     if (src.content && typeof src.content === 'object') {
       var ct = { gates: [], warnings: [] };
       if (Array.isArray(src.content.gates)) src.content.gates.forEach(function (g, k) { if (k < 8 && g && typeof g === 'object') { var o = {}; ['headline','scene','question','noWill','noCloser','yesWill','yesCloser'].forEach(function (f) { if (typeof g[f] === 'string') o[f] = g[f].slice(0, 2000); }); ct.gates[k] = o; } });
-      if (Array.isArray(src.content.warnings)) src.content.warnings.forEach(function (t, k) { if (k < 5 && typeof t === 'string') ct.warnings[k] = t.slice(0, 3000); });
+      if (Array.isArray(src.content.warnings)) src.content.warnings.forEach(function (t, k) { if (k < 8 && typeof t === 'string') ct.warnings[k] = t.slice(0, 3000); });
       state.content = ct;
     }
     if (src.audio && typeof src.audio === 'object') {
@@ -618,9 +628,18 @@ body.pinok #pinwall{display:none}
   function longDate(t) { return MONTHS[t.getMonth()] + ' ' + ordinal(t.getDate()) + ', ' + t.getFullYear(); }
   function shortDate(t) { return MONTHS[t.getMonth()].slice(0, 3) + ' ' + t.getDate(); }
   function sealCode(plain) { var o = ''; for (var i = 0; i < plain.length; i++) o += String.fromCharCode(plain.charCodeAt(i) ^ CIPHER.charCodeAt(i % CIPHER.length)); return btoa(o); }
-  function hasCode() { try { return !!(localStorage.getItem('ironGate.code') || SEALED); } catch (e) { return !!SEALED; } }
+  function unsealStr(sealed) { var raw = atob(sealed), out = ''; for (var i = 0; i < raw.length; i++) out += String.fromCharCode(raw.charCodeAt(i) ^ CIPHER.charCodeAt(i % CIPHER.length)); return out; }
+  var VAULT_KEY = 'ironGate.vault';
+  function vaultRead() {
+    var list = [];
+    try { var raw = localStorage.getItem(VAULT_KEY); if (raw) { var dec = JSON.parse(unsealStr(raw)); if (Array.isArray(dec)) list = dec.filter(function (e) { return e && typeof e.label === 'string' && typeof e.value === 'string'; }); } } catch (e) {}
+    try { var c = localStorage.getItem('ironGate.code'); if (c) { list.unshift({ label: 'Override code', value: unsealStr(c) }); vaultWrite(list); } } catch (e) {}
+    return list;
+  }
+  function vaultWrite(list) { try { localStorage.setItem(VAULT_KEY, sealCode(JSON.stringify(list))); localStorage.removeItem('ironGate.code'); return true; } catch (e) { return false; } }
+  function hasCode() { return vaultRead().length > 0; }
   function unseal() {
-    var sealed = SEALED; try { sealed = localStorage.getItem('ironGate.code') || SEALED; } catch (e) {}
+    var sealed = SEALED;
     if (!sealed) return '';
     var raw = atob(sealed), out = '';
     for (var i = 0; i < raw.length; i++) out += String.fromCharCode(raw.charCodeAt(i) ^ CIPHER.charCodeAt(i % CIPHER.length));
@@ -934,7 +953,7 @@ body.pinok #pinwall{display:none}
     render('final',
       '<div class="card-head"><span class="count">All eight gates passed \u00b7 nothing left but the choice</span></div>' +
       '<div class="warn-label">Final warning \u00b7 read before you use it</div>' +
-      '<p class="warn-text final-text">' + esc(warningsAll()[Math.floor(Math.random() * 5)]) + '</p>' +
+      '<p class="warn-text final-text">' + esc(warningsAll()[Math.floor(Math.random() * warningsAll().length)]) + '</p>' +
       '<div class="final-actions">' +
         '<button class="final-yes" id="btn-final-yes" type="button">Yes, I willingly will lower my magnetism</button>' +
         '<button class="final-no" id="btn-final-no" type="button">no. hold the line.</button>' +
@@ -946,12 +965,19 @@ body.pinok #pinwall{display:none}
     onKey = function (e) { if (e.key === 'n' || e.key === 'N') { e.preventDefault(); holdLine(); } };
   }
 
+  function vaultHTML() {
+    var list = vaultRead();
+    if (!list.length) return '<div class="code">NOTHING STORED</div><p class="fine" style="color:var(--red)">Open Admin \u2192 Vault on this phone and add the override code, Screen Time login, etc. Stored on this phone only.</p>';
+    return '<div class="vault">' + list.map(function (e, k) {
+      return '<div class="v-row"><div class="v-label">' + esc(e.label) + '</div><div class="code v-val" id="v' + k + '">' + esc(e.value) + '</div><button class="copy v-copy" type="button" data-v="' + k + '">Copy</button></div>';
+    }).join('') + '</div>';
+  }
   function reveal() {
     onKey = null;
     clearInterval(waitTick);
     stopAudio();
     var tr = $('taunt'); if (tr) { tr.textContent = 'You chose this.'; tr.className = 'taunt'; }
-    var code = unseal();
+    var code = '';
     state.unlockAt = Date.now() + LOCK_MS;
     state.kind = 'opened';
     state.pulls += 1;
@@ -959,25 +985,19 @@ body.pinok #pinwall{display:none}
     render('reveal',
       '<div class="card-head"><span class="count">All checkpoints cleared</span></div>' +
       '<div class="state-label">Override code</div>' +
-      '<div class="code" id="code">' + (code ? code : 'NO CODE SET') + '</div>' +
-      (code ? '' : '<p class="fine" style="color:var(--red)">Open Admin \u2192 Set code on this phone and type the override code once. It is stored on this phone only.</p>') +
-      '<button class="copy" id="btn-copy" type="button">Copy code</button>' +
+      vaultHTML() +
       '<p class="fine">Works for Cold Turkey and BlockSite. The gate is now locked for 15 minutes.</p>' +
       '<button class="btn done-btn" id="btn-done" type="button">Close \u00b7 back to the board</button>'
     );
     $('btn-done').onclick = function () { locked(); };
     onKey = function (e) { if (e.key === 'Escape') { e.preventDefault(); locked(); } };
-    $('btn-copy').onclick = function () {
-      var btn = this;
-      function selectIt() {
-        var r = document.createRange(); r.selectNodeContents($('code'));
-        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
-        btn.textContent = 'Selected · press ⌘C';
-      }
-      if (native) { try { window.webkit.messageHandlers.ironGateCopy.postMessage(code); btn.textContent = 'Copied'; return; } catch (e) {} }
-      try { navigator.clipboard.writeText(code).then(function () { btn.textContent = 'Copied'; }, selectIt); }
-      catch (e) { selectIt(); }
-    };
+    Array.prototype.forEach.call(document.querySelectorAll('.v-copy'), function (b) {
+      b.onclick = function () {
+        var btn = this, k = btn.getAttribute('data-v'), v = vaultRead()[parseInt(k, 10)], val = v ? v.value : '';
+        function selectIt() { var r = document.createRange(); r.selectNodeContents($('v' + k)); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Selected'; }
+        try { navigator.clipboard.writeText(val).then(function () { btn.textContent = 'Copied'; }, selectIt); } catch (e) { selectIt(); }
+      };
+    });
   }
 
 
@@ -1153,7 +1173,7 @@ body.pinok #pinwall{display:none}
     var isW = sel.charAt(0) === 'w', idx = parseInt(sel.slice(1), 10);
     var opts = '';
     for (var g = 0; g < 8; g++) opts += '<option value="g' + g + '"' + (sel === 'g' + g ? ' selected' : '') + '>Gate ' + (g + 1) + '</option>';
-    for (var w = 0; w < 5; w++) opts += '<option value="w' + w + '"' + (sel === 'w' + w ? ' selected' : '') + '>Final warning ' + (w + 1) + '</option>';
+    for (var w = 0; w < WARNINGS.length; w++) opts += '<option value="w' + w + '"' + (sel === 'w' + w ? ' selected' : '') + '>Final warning ' + (w + 1) + '</option>';
     var body = '';
     if (isW) {
       body = '<div class="field"><label class="ov-label" for="ce-w">Warning text</label><textarea id="ce-w" class="ce-ta" rows="9">' + esc((state.content.warnings[idx]) || WARNINGS[idx]) + '</textarea></div>';
@@ -1183,6 +1203,32 @@ body.pinok #pinwall{display:none}
     };
   }
   $('ctEdit').onclick = function () { openEditor('g0'); };
+  var VAULT_LABELS = ['Override code (Cold Turkey / BlockSite)', 'Screen Time username', 'Screen Time password', 'Other'];
+  function openVault(msg) {
+    var list = vaultRead();
+    var rows = list.length ? list.map(function (e, k) { return '<div class="v-row v-list"><span class="v-label">' + esc(e.label) + '</span><span class="v-mask">' + '\u2022'.repeat(Math.min(12, e.value.length)) + '</span><button class="btn v-del" type="button" data-v="' + k + '">Remove</button></div>'; }).join('') : '<p class="fine">Nothing stored yet.</p>';
+    var opts = VAULT_LABELS.map(function (l) { return '<option>' + l + '</option>'; }).join('');
+    showOverlay('editor',
+      '<div class="ov-eyebrow">Vault</div>' +
+      '<p class="fine">Everything here is typed on this phone, stored on this phone, and shown only after the eight gates. Values are never displayed here.</p>' +
+      rows +
+      '<div class="field"><label class="ov-label" for="v-label">Label</label><select id="v-label" class="btn">' + opts + '</select><input id="v-custom" type="text" placeholder="Custom label" autocomplete="off" style="font-family:var(--body);font-size:14px;max-width:100%;display:none"></div>' +
+      '<div class="field"><label class="ov-label" for="v-in">Value</label><input id="v-in" type="password" autocomplete="off" autocapitalize="none" spellcheck="false" style="font-family:var(--display);max-width:100%;font-size:22px;letter-spacing:.1em"></div>' +
+      '<p class="err" id="v-err">' + (msg || '') + '</p>' +
+      '<div class="ov-actions"><button class="btn primary" type="button" id="v-save">Add / replace</button><button class="btn" type="button" data-close="1">Done</button></div>',
+      '#v-in');
+    $('v-label').onchange = function () { $('v-custom').style.display = this.value === 'Other' ? '' : 'none'; };
+    $('v-save').onclick = function () {
+      var label = $('v-label').value === 'Other' ? $('v-custom').value.trim() : $('v-label').value;
+      var v = $('v-in').value.trim();
+      if (!label) { $('v-err').textContent = 'Give it a label'; return; }
+      if (!v) { $('v-err').textContent = 'Nothing typed'; return; }
+      var l = vaultRead().filter(function (e) { return e.label !== label; }); l.push({ label: label, value: v });
+      if (!vaultWrite(l)) { $('v-err').textContent = 'Could not save'; return; }
+      openVault('Saved: ' + label);
+    };
+    Array.prototype.forEach.call(document.querySelectorAll('.v-del'), function (b) { b.onclick = function () { var l = vaultRead(); l.splice(parseInt(b.getAttribute('data-v'), 10), 1); vaultWrite(l); openVault('Removed'); }; });
+  }
   $('codeImport').onclick = function () {
     showOverlay('editor',
       '<div class="ov-eyebrow">Import code</div>' +
@@ -1201,30 +1247,14 @@ body.pinok #pinwall{display:none}
         .then(function (key) { return crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(XFER.i) }, key, b64(XFER.c)); })
         .then(function (buf) {
           var plain = new TextDecoder().decode(buf);
-          try { localStorage.setItem('ironGate.code', sealCode(plain)); } catch (e) { err.textContent = 'Could not save'; return; }
+          var vl = vaultRead().filter(function (e) { return e.label !== 'Override code (Cold Turkey / BlockSite)'; }); vl.unshift({ label: 'Override code (Cold Turkey / BlockSite)', value: plain }); if (!vaultWrite(vl)) { err.textContent = 'Could not save'; return; }
           $('xfer-in').value = ''; err.textContent = 'Code stored on this phone';
           setTimeout(closeOverlay, 1200);
         })
         .catch(function () { err.textContent = 'Wrong key'; });
     };
   };
-  $('codeSet').onclick = function () {
-    showOverlay('editor',
-      '<div class="ov-eyebrow">Set code</div>' +
-      '<p class="fine">Type the Cold Turkey / BlockSite override code. It is saved on this phone only and shown after the eight gates. ' + (hasCode() ? 'A code is already set; saving replaces it.' : 'No code is set yet.') + '</p>' +
-      '<div class="field"><label class="ov-label" for="code-in">Code</label><input id="code-in" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" style="font-family:var(--display);max-width:100%;font-size:22px;letter-spacing:.1em"></div>' +
-      '<p class="err" id="code-err"></p>' +
-      '<div class="ov-actions"><button class="btn primary" type="button" id="code-save">Save</button><button class="btn" type="button" data-close="1">Cancel</button><button class="btn danger" type="button" id="code-clear">Clear code</button></div>',
-      '#code-in');
-    $('code-save').onclick = function () {
-      var v = $('code-in').value.replace(/\s+/g, '');
-      if (v.length < 4) { $('code-err').textContent = 'Too short'; return; }
-      try { localStorage.setItem('ironGate.code', sealCode(v)); } catch (e) { $('code-err').textContent = 'Could not save'; return; }
-      $('code-in').value = ''; $('code-err').textContent = 'Saved on this phone';
-      setTimeout(closeOverlay, 900);
-    };
-    $('code-clear').onclick = function () { try { localStorage.removeItem('ironGate.code'); } catch (e) {} $('code-err').textContent = 'Cleared'; };
-  };
+  $('codeSet').onclick = function () { openVault(''); };
 
   /* ---------- boot ---------- */
   loadState();
